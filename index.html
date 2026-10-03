@@ -18,8 +18,9 @@
 <p class="draft-banner">Entwurf — Texte, Fotos, Marktdaten und Kontakt von argento.ch übernommen. Preise und Online-Kauf folgen.</p>
 
 <header class="site-header">
-  <a href="#" class="wordmark">Argento</a>
-  <nav aria-label="Hauptnavigation">
+  <a href="#top" class="wordmark" aria-label="Argento, nach oben">Argento</a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menü</button>
+  <nav id="hauptnav" class="main-nav" aria-label="Hauptnavigation">
     <a href="#schmuck">Schmuck</a>
     <a href="#maerkte">Märkte</a>
     <a href="#ueber-uns">Über uns</a>
@@ -27,7 +28,7 @@
   </nav>
 </header>
 
-<main>
+<main id="top">
 
   <section class="feature" aria-labelledby="feature-title">
     <figure class="feature-img">
@@ -207,8 +208,8 @@
   </section>
 
   <section id="maerkte" class="markets" aria-labelledby="maerkte-title">
-    <figure class="markets-img"><img src="img/marktstand.jpg" alt="Der Argento-Stand am Weihnachtsmarkt mit Ketten und Ohrringen" loading="lazy" width="1200" height="800"></figure>
     <h2 id="maerkte-title">Marktdaten 2026</h2>
+    <figure class="markets-img"><img src="img/marktstand.jpg" alt="Der Argento-Stand am Weihnachtsmarkt mit Ketten und Ohrringen" loading="lazy" width="1200" height="800"></figure>
     <ol class="dates">
       <li><time datetime="2026-11-08">24. 10. bis 8. 11.</time><span>Basler Herbstmesse</span><span class="state"></span></li>
       <li><time datetime="2026-12-23">26. 11. bis 23. 12.</time><span>Weihnachtsmarkt Basel</span><span class="state"></span></li>
@@ -244,7 +245,7 @@
     </div>
   </section>
 
-  <section class="history" aria-labelledby="history-title">
+  <section id="geschichte" class="history" aria-labelledby="history-title" data-nav="ueber-uns">
     <h2 id="history-title">Wie es begann, mit Esther und Bruno Lüscher</h2>
     <div class="history-grid">
       <div class="history-text">
@@ -290,5 +291,39 @@
   </nav>
 </footer>
 
+<script>
+/* Navigation: Menü am Handy, aktiver Abschnitt markieren. Ohne JavaScript bleiben alle Links sichtbar. */
+(function () {
+  document.documentElement.classList.add('js');
+  var header = document.querySelector('.site-header');
+  var toggle = document.querySelector('.menu-toggle');
+  var links = Array.prototype.slice.call(document.querySelectorAll('.main-nav a'));
+
+  function setOpen(open) {
+    header.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.textContent = open ? 'Schliessen' : 'Menü';
+  }
+  toggle.addEventListener('click', function () { setOpen(!header.classList.contains('menu-open')); });
+  links.forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && header.classList.contains('menu-open')) { setOpen(false); toggle.focus(); }
+  });
+
+  if (!('IntersectionObserver' in window)) return;
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var sections = document.querySelectorAll('main section[id]');
+  var visible = {};
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
+    var current = null;
+    sections.forEach(function (s) { if (!current && visible[s.id]) current = s.getAttribute('data-nav') || s.id; });
+    links.forEach(function (a) { a.removeAttribute('aria-current'); });
+    if (current && byId[current]) byId[current].setAttribute('aria-current', 'location');
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(function (s) { io.observe(s); });
+})();
+</script>
 </body>
 </html>
