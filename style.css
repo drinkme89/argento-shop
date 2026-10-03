@@ -128,3 +128,18 @@ section h2 { font: 300 clamp(2rem, 4vw, 2.8rem)/1.1 var(--serif); letter-spacing
 .history-text strong { font-weight: 400; font-family: var(--sans); letter-spacing: .04em; }
 .history-imgs { display: grid; gap: 1.25rem; }
 @media (max-width: 760px) { .history-grid { grid-template-columns: 1fr; } .history-imgs { grid-template-columns: 1fr 1fr; } }
+
+/* --- UI/UX-Review 2026-10-03 --- */
+:root { --muted-dark: #9AA1A7; }   /* Labels auf Graphit: Kontrast >= 4.5:1 */
+.hallmark dt { color: var(--muted-dark); }
+.buy { margin-top: 2.25rem; }
+.next-market { margin-top: 1.5rem; font: 400 .85rem/1.5 var(--sans); letter-spacing: .03em; color: var(--silver); }
+.next-market a { color: #fff; text-underline-offset: 4px; }
+.price-note { max-width: 60ch; margin: -1.5rem 0 3rem; font: 400 .85rem/1.6 var(--sans); color: var(--muted); }
+.product h3 { font: 400 1.05rem/1.35 var(--serif); margin-top: 1rem; }
+.product .spec { margin-top: .15rem; color: var(--muted); }
+.buy-link { padding: .75rem 0 .3rem; margin-top: 0; min-height: 44px; display: inline-flex; align-items: flex-end; }
+.site-header nav a { display: inline-flex; align-items: center; min-height: 44px; }
+.skip { position: absolute; left: -999px; top: 0; background: #fff; color: var(--ink); padding: .75rem 1rem; z-index: 10; }
+.skip:focus { left: 1rem; }
+@media (max-width: 760px) { .site-header nav { gap: 0 1.5rem; } }
